@@ -1,0 +1,91 @@
+// Source code is decompiled from a .class file using FernFlower decompiler.
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class GestionRV {
+   List<Patient> patients = new ArrayList();
+   List<RendezVous> rendezvous = new ArrayList();
+   int numPatient = 0;
+
+   public GestionRV() {
+   }
+
+   public void ajouterPatient(String var1, String var2, String var3) {
+      ++this.numPatient;
+      String var4 = String.format("PAT%04d", this.numPatient);
+      Patient var5 = new Patient(var1, var2, var3);
+      var5.numero = var4;
+      this.patients.add(var5);
+   }
+
+   public void listerPatients() {
+      Iterator var1 = this.patients.iterator();
+
+      while(var1.hasNext()) {
+         Patient var2 = (Patient)var1.next();
+         System.out.println("Patient " + var2.numero + ": " + var2.nom + " " + var2.prenom + " - T\u00c3\u00a9l\u00c3\u00a9phone: " + var2.telephone);
+      }
+
+   }
+
+   public void enregistrerRV(String var1, String var2, String var3) {
+      Patient var4 = null;
+      Iterator var5 = this.patients.iterator();
+
+      while(var5.hasNext()) {
+         Patient var6 = (Patient)var5.next();
+         if (var6.telephone.equals(var1)) {
+            var4 = var6;
+            break;
+         }
+      }
+
+      if (var4 != null) {
+         RendezVous var7 = new RendezVous(var4, var2, var3);
+         this.rendezvous.add(var7);
+      } else {
+         System.out.println("Patient non trouv\u00c3\u00a9.");
+      }
+
+   }
+
+   public void listerRVParEtat(String var1) {
+      Iterator var2 = this.rendezvous.iterator();
+
+      while(var2.hasNext()) {
+         RendezVous var3 = (RendezVous)var2.next();
+         if (var3.etat.equals(var1)) {
+            System.out.println("Rendez-vous pour " + var3.patient.nom + " " + var3.patient.prenom + " - Sp\u00c3\u00a9cialit\u00c3\u00a9: " + var3.specialite);
+         }
+      }
+
+   }
+
+   public void listerRVParSpecialite(String var1) {
+      Iterator var2 = this.rendezvous.iterator();
+
+      while(var2.hasNext()) {
+         RendezVous var3 = (RendezVous)var2.next();
+         if (var3.specialite.equals(var1)) {
+            System.out.println("Rendez-vous pour " + var3.patient.nom + " " + var3.patient.prenom + " - Etat: " + var3.etat);
+         }
+      }
+
+   }
+
+   public static void main(String[] var0) {
+      GestionRV var1 = new GestionRV();
+      var1.ajouterPatient("Doe", "John", "123456789");
+      var1.ajouterPatient("Smith", "Alice", "987654321");
+      var1.ajouterPatient("Johnson", "Bob", "555666777");
+      var1.enregistrerRV("123456789", "Cardiologie", "En cours");
+      var1.enregistrerRV("987654321", "Ophtalmologie", "En cours");
+      var1.listerPatients();
+      System.out.println("\nRendez-vous en cours:");
+      var1.listerRVParEtat("En cours");
+      System.out.println("\nRendez-vous de Cardiologie:");
+      var1.listerRVParSpecialite("Cardiologie");
+   }
+}
+
